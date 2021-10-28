@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+option csharp_namespace = "OzonEdu.MerchandiseService.GrpcServices";
+package MerchandiseService;
+
+import "google/protobuf/wrappers.proto";
+
+service MerchandiseServiceGrpc {
+  rpc RequestMerchSet (RequestMerchSetRequest) returns (google.protobuf.BoolValue);
+  rpc RetrieveIssuedMerchSetsInformation (RetrieveIssuedMerchSetsInformationRequest) returns (RetrieveIssuedMerchSetsInformationResponse);
+}
+
+message RequestMerchSetRequest {
+  int32 merch_pack_index = 1;
+  int32 size = 2;
+}
+
+message RetrieveIssuedMerchSetsInformationRequest {
+  int32 employee_id = 1;
+}
+
+message RetrieveIssuedMerchSetsInformationResponse {
+  repeated MerchSet merch_sets = 1;
+}
+
+message MerchSet {
+  int32 merch_set_id = 1;
+  string merch_pack = 2;
+  repeated Sku skues = 3;
+}
+
+message Sku {
+  int64 sku_id = 1;
+  string sku_name = 2;
+  google.protobuf.Int32Value size = 3;
+}
