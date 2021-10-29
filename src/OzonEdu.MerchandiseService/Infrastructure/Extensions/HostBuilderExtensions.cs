@@ -33,6 +33,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                  });
                 
                  services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
+                 services.AddSingleton<IStartupFilter, LoggingStartupFilter>();
                  services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 
                  services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
