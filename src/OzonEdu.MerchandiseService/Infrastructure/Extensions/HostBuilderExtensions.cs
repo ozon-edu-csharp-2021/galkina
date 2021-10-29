@@ -17,7 +17,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
-                services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
+                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
                  services.AddSwaggerGen(options =>
                  {
                      string serviceName = Assembly.GetExecutingAssembly().GetName().Name ?? "no name";
@@ -35,7 +35,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                  services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
                  services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 
-                services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+                 services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
             });
             return builder;
         }
