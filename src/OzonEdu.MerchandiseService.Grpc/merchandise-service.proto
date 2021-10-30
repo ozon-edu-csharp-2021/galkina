@@ -5,13 +5,19 @@ package MerchandiseService;
 import "google/protobuf/wrappers.proto";
 
 service MerchandiseServiceGrpc {
-  rpc RequestMerchSet (RequestMerchSetRequest) returns (google.protobuf.BoolValue);
+  rpc QueryMerchSet (QueryMerchSetRequest) returns (QueryMerchSetResponse);
   rpc RetrieveIssuedMerchSetsInformation (RetrieveIssuedMerchSetsInformationRequest) returns (RetrieveIssuedMerchSetsInformationResponse);
 }
 
-message RequestMerchSetRequest {
+message QueryMerchSetRequest {
   int32 merch_pack_index = 1;
   int32 size = 2;
+}
+
+message QueryMerchSetResponse {
+  int32 merch_set_id = 1;
+  string merch_pack = 2;
+  repeated Sku skues = 3;
 }
 
 message RetrieveIssuedMerchSetsInformationRequest {

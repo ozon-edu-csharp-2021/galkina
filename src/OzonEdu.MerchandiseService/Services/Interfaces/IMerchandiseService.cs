@@ -7,7 +7,7 @@ namespace OzonEdu.MerchandiseService.Services.Interfaces
 {
     public interface IMerchandiseService
     {
-        Task<bool> RequestMerchSet(int merchPackIndex, int size, CancellationToken token);
+        Task<MerchSet> QueryMerchSet(int merchPackIndex, int size, CancellationToken token);
 
         Task<List<MerchSet>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token);
     }

@@ -8,7 +8,7 @@ namespace OzonEdu.MerchandiseService.HttpClients
 {
     public interface IMerchandiseHttpClient
     {
-        Task<bool> RequestMerchSet(int merchPackIndex, int size, CancellationToken token);
+        Task<MerchSetResponse> QueryMerchSet(int merchPackIndex, int size, CancellationToken token);
         Task<List<MerchSetResponse>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token);
     }
 }

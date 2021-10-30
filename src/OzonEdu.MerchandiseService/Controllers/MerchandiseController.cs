@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,22 @@ namespace OzonEdu.MerchandiseService.Controllers
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpGet("{merchPackIndex:int}/{size:int}")]
-        public async Task<ActionResult<bool>> RequestMerchSet(int merchPackIndex, int size, CancellationToken token)
+        public async Task<ActionResult<MerchSetResponse>> QueryMerchSet(int merchPackIndex, int size, CancellationToken token)
         {
-            bool result = await _merchandiseService.RequestMerchSet(merchPackIndex, size, token);
-            return Ok(result);
+            var merchSet = await _merchandiseService.QueryMerchSet(merchPackIndex, size, token);
+            MerchSetResponse merchSetResponse = new MerchSetResponse
+            {
+                MerchSetId = merchSet.MerchSetId,
+                MerchPack = merchSet.MerchPack,
+                Skues = merchSet.Skues.Select(i => new HttpModels.Sku
+                {
+                    SkuId = i.SkuId,
+                    SkuName = i.SkuName,
+                    Size = i.Size
+                }).ToList()
+            };
+                    
+            return Ok(merchSetResponse);
         }
 
         /// <summary>

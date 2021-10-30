@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using OzonEdu.MerchandiseService.Services.Interfaces;
 
@@ -15,11 +14,21 @@ namespace OzonEdu.MerchandiseService.GrpcServices
             _merchandiseService = merchandiseService;
         }
 
-        public override async Task<BoolValue> RequestMerchSet(RequestMerchSetRequest request, ServerCallContext context)
+        public override async Task<QueryMerchSetResponse> QueryMerchSet(QueryMerchSetRequest request, ServerCallContext context)
         {
-            bool isMerchRequested = await _merchandiseService.RequestMerchSet(request.MerchPackIndex, request.Size, context.CancellationToken);
+            var merchSet = await _merchandiseService.QueryMerchSet(request.MerchPackIndex, request.Size, context.CancellationToken);
 
-            return new BoolValue() { Value = isMerchRequested };
+            return new QueryMerchSetResponse()
+            {
+                MerchSetId = merchSet.MerchSetId,
+                MerchPack = merchSet.MerchPack,
+                Skues = { merchSet.Skues.Select(i => new Sku
+                {
+                    SkuId = i.SkuId,
+                    SkuName = i.SkuName,
+                    Size = i.Size
+                })  }
+            };
         }
 
         public override async Task<RetrieveIssuedMerchSetsInformationResponse> RetrieveIssuedMerchSetsInformation

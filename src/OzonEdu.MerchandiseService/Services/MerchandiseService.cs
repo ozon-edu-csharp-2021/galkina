@@ -9,9 +9,16 @@ namespace OzonEdu.MerchandiseService.Services
 {
     public class MerchandiseService : IMerchandiseService
     {
-        public Task<bool> RequestMerchSet(int merchPackIndex, int size, CancellationToken token)
+        public Task<MerchSet> QueryMerchSet(int merchPackIndex, int size, CancellationToken token)
         {
-            return Task.FromResult(true);
+            MerchSet merchSet =  new MerchSet
+            {
+                MerchSetId = 1,
+                MerchPack = "merch pack",
+                Skues = new List<Sku> {new Sku {SkuId = 2, SkuName = "t-shirt", Size = 2}}
+            };
+            
+            return Task.FromResult<MerchSet>((merchSet));
         }
 
         public Task<List<MerchSet>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token)
