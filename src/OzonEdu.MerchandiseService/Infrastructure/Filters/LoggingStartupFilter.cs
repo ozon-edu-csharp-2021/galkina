@@ -15,7 +15,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Filters
                 {
                     return context.Request.Path.StartsWithSegments("/api");
                 }, a => {
-                    a.UseMiddleware<RequestResponseLoggingMiddleware>();
+                    a.UseMiddleware<ResponseLoggingMiddleware>();
+                    a.UseMiddleware<RequestLoggingMiddleware>();
                 });
 
                 next(app);
