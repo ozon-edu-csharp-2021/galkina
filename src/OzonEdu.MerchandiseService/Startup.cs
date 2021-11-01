@@ -17,7 +17,7 @@ namespace OzonEdu.MerchandiseService
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<MerchandiseServiceGrpcService>();
