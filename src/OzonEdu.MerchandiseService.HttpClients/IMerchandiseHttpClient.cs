@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchandiseService.HttpModels;
-using OzonEdu.MerchandiseService.Models;
 
 namespace OzonEdu.MerchandiseService.HttpClients
 {
     public interface IMerchandiseHttpClient
     {
-        Task<MerchSetResponse> QueryMerchSet(int merchPackIndex, int size, CancellationToken token);
-        Task<List<MerchSetResponse>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token);
+        Task<MerchPackResponse> QueryMerchSet(long employeeId, int merchPackIndex, string size, CancellationToken token);
+        Task<List<MerchPackResponse>> RetrieveIssuedMerchSetsInformation(long employeeId, CancellationToken token);
     }
 }

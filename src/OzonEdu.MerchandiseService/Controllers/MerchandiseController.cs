@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchandiseService.HttpModels;
-using OzonEdu.MerchandiseService.Services.Interfaces;
+using OzonEdu.MerchandiseService.Infrastructure.Commands;
+using OzonEdu.MerchandiseService.Infrastructure.Queries;
+using Aggregate = OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate;
 
 namespace OzonEdu.MerchandiseService.Controllers
 {
@@ -14,11 +16,11 @@ namespace OzonEdu.MerchandiseService.Controllers
     [Produces("application/json")]
     public class MerchandiseController : ControllerBase
     {
-        private readonly IMerchandiseService _merchandiseService;
+        private readonly IMediator _mediator;
 
-        public MerchandiseController(IMerchandiseService merchandiseService)
+        public MerchandiseController(IMediator mediator)
         {
-            _merchandiseService = merchandiseService;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         
         /// <summary>
@@ -29,23 +31,28 @@ namespace OzonEdu.MerchandiseService.Controllers
         /// <param name="token">Cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        [HttpGet("{merchPackIndex:int}/{size:int}")]
-        public async Task<ActionResult<MerchSetResponse>> QueryMerchSet(int merchPackIndex, int size, CancellationToken token)
+        [HttpGet("{employeeId:long}/{merchPackIndex:int}/{size}")]
+        public async Task<ActionResult<MerchPackResponse>> QueryMerchSet(long employeeId, int merchPackIndex, string size, CancellationToken token)
         {
-            var merchSet = await _merchandiseService.QueryMerchSet(merchPackIndex, size, token);
-            MerchSetResponse merchSetResponse = new MerchSetResponse
+            var giveMerchPackAtEmployeeRequestCommand = new GiveMerchPackAtEmployeeRequestCommand()
             {
-                MerchSetId = merchSet.MerchSetId,
-                MerchPack = merchSet.MerchPack,
-                Skues = merchSet.Skues.Select(i => new HttpModels.Sku
-                {
-                    SkuId = i.SkuId,
-                    SkuName = i.SkuName,
-                    Size = i.Size
-                }).ToList()
+                Type = Aggregate.MerchType.Parse(merchPackIndex),
+                ClothingSize = Aggregate.ClothingSize.Parse(size),
+                EmployeeId = employeeId
             };
-                    
-            return Ok(merchSetResponse);
+
+            Aggregate.MerchPack result = await _mediator.Send(giveMerchPackAtEmployeeRequestCommand, token);
+            
+            MerchPackResponse merchPackResponse = new MerchPackResponse()
+            {
+                Type = (MerchPackType) result.Type.ParseToInt(),
+                ClothingSize = (ClothingSize) result.ClothingSize.ParseToInt(),
+                Status = (MerchRequestStatus) result.Status.ParseToInt(),
+                RequestDate = result.RequestDate,
+                IssueDate = result.IssueDate
+            };
+            
+            return Ok(merchPackResponse);
         }
 
         /// <summary>
@@ -55,10 +62,32 @@ namespace OzonEdu.MerchandiseService.Controllers
         /// <param name="token">Cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        [HttpGet("{employeeId:int}")]
-        public async Task<List<MerchSetResponse>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token)
+        [HttpGet("{employeeId:long}")]
+        public async Task<List<MerchPackResponse>> RetrieveIssuedMerchSetsInformation(long employeeId, CancellationToken token)
         {
-            throw new NotImplementedException();
+            var getIssuedMerchPacksQuery = new GetIssuedMerchPacksQuery()
+            {
+                EmployeeId = employeeId
+            };
+
+            var result = await _mediator.Send(getIssuedMerchPacksQuery, token);
+
+            List<MerchPackResponse> response = new List<MerchPackResponse>();
+
+            foreach (Aggregate.MerchPack merchPack in result)
+            {
+                MerchPackResponse merchPackResponse = new MerchPackResponse()
+                {
+                    Type = (MerchPackType) merchPack.Type.ParseToInt(),
+                    ClothingSize = (ClothingSize) merchPack.ClothingSize.ParseToInt(),
+                    Status = (MerchRequestStatus) merchPack.Status.ParseToInt(),
+                    RequestDate = merchPack.RequestDate,
+                    IssueDate = merchPack.IssueDate
+                };
+                response.Add(merchPackResponse);
+            }
+
+            return response;
         }
     }
 }

@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.HttpModels", "src\OzonEdu.MerchandiseService.HttpModels\OzonEdu.MerchandiseService.HttpModels.csproj", "{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.Domain", "src\OzonEdu.MerchandiseService.Domain\OzonEdu.MerchandiseService.Domain.csproj", "{42884BF4-F441-45E3-8E95-ADD3E84114A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.Domain.Tests", "tests\OzonEdu.MerchandiseService.Domain.Tests\OzonEdu.MerchandiseService.Domain.Tests.csproj", "{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,8 @@ Global
 		{91A4F819-AA5B-4F56-8CA5-239D705CE6BB} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
 		{0C3F3C3F-76F6-4818-BC11-DD0DE7B3E823} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
 		{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
+		{42884BF4-F441-45E3-8E95-ADD3E84114A4} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
+		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7} = {D3BE6FB9-F108-4455-9900-9D25CB481021}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{30615C79-4451-4BE5-8588-073F67DEB802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -47,5 +53,13 @@ Global
 		{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42884BF4-F441-45E3-8E95-ADD3E84114A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42884BF4-F441-45E3-8E95-ADD3E84114A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42884BF4-F441-45E3-8E95-ADD3E84114A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42884BF4-F441-45E3-8E95-ADD3E84114A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
