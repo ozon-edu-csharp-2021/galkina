@@ -16,20 +16,20 @@ namespace OzonEdu.MerchandiseService.HttpClients
             _httpClient = httpClient;
         }
         
-        public async Task<MerchSetResponse> QueryMerchSet(int merchPackIndex, int size, CancellationToken token)
+        public async Task<MerchPackResponse> QueryMerchSet(long employeeId, int merchPackIndex, string size, CancellationToken token)
         {
-            string requestUrl = string.Concat("api/merchandise", $"?merchPackIndex={merchPackIndex}", $"&size={size}");
+            string requestUrl = string.Concat("api/merchandise", $"?employeeId={employeeId}", $"?merchPackIndex={merchPackIndex}", $"&size={size}");
             using var response = await _httpClient.GetAsync(requestUrl, token);
             var body = await response.Content.ReadAsStringAsync(token);
-            return JsonSerializer.Deserialize<MerchSetResponse>(body);
+            return JsonSerializer.Deserialize<MerchPackResponse>(body);
         }
 
-        public async Task<List<MerchSetResponse>> RetrieveIssuedMerchSetsInformation(int employeeId, CancellationToken token)
+        public async Task<List<MerchPackResponse>> RetrieveIssuedMerchSetsInformation(long employeeId, CancellationToken token)
         {
             string requestUrl = string.Concat("api/merchandise", $"?employeeId={employeeId}");
             using var response = await _httpClient.GetAsync(requestUrl, token);
             var body = await response.Content.ReadAsStringAsync(token);
-            return JsonSerializer.Deserialize<List<MerchSetResponse>>(body);
+            return JsonSerializer.Deserialize<List<MerchPackResponse>>(body);
         }
     }
 }
