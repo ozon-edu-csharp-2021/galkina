@@ -5,12 +5,12 @@ using OzonEdu.MerchandiseService.Domain.Contracts;
 
 public class UnitOfWorkStub : IUnitOfWork, IDisposable
 {
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(1);
     }
 
-    public Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+    public Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(true);
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -24,8 +25,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
         {
             //TODO:
             List<Employee> employees = EmployeesServiceStub.GetAll();
-            Employee employee = DomainService.DoesEmployeeExist(employees, request.EmployeeId);
-            if (employee == null)
+            Employee employee;
+            if (!DomainService.TryGetEmployee(employees, request.EmployeeId, out employee))
             {
                 throw new Exception($"Employee with Id {request.EmployeeId} not found.");
             }
@@ -33,7 +34,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
             MerchPack merchPack = new MerchPack(request.Type, request.ClothingSize, employee);
             
             List<MerchPack> merchPacksInDb = await _merchPackRepository.GetIssuedMerchPacksToEmployeeAsync(request.EmployeeId, cancellationToken);
-            if (DomainService.DidMerchPackIssue(merchPacksInDb, request.Type))
+            if (DidMerchPackIssue(merchPacksInDb, request.Type))
             {
                 merchPack.Cancel();
                 throw new Exception($"{request.Type} already issued in this year.");
@@ -63,6 +64,20 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
             await _merchPackRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
             
             return merchPack;
+        }
+        
+        public bool DidMerchPackIssue(List<MerchPack> merchPacks, MerchType type)
+        {
+            MerchPack merchPack = merchPacks.Where(m => m.Type == type)
+                .OrderByDescending(m => m.IssueDate)
+                .FirstOrDefault();
+
+            if (merchPack == null)
+                return false;
+
+            TimeSpan oneYear = new TimeSpan(365, 0, 0, 0);
+
+            return DateTime.Now - merchPack.IssueDate < oneYear;
         }
     }
 }
