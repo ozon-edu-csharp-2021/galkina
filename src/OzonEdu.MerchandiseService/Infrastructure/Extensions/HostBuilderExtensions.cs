@@ -35,7 +35,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                      string xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
                      options.IncludeXmlComments(xmlFilePath);
                  });
-                 
+
                  services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
                  services.AddSingleton<IStartupFilter, LoggingStartupFilter>();
                  services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
