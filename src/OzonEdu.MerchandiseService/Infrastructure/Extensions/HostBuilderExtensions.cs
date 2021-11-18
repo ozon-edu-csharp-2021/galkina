@@ -70,11 +70,11 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                 {
                     string serviceName = Assembly.GetExecutingAssembly().GetName().Name ?? "no name";
                     string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "no version";
-                     
+                    
                     options.SwaggerDoc("v1", new OpenApiInfo {Title = serviceName, Version = version});
                  
                     options.CustomSchemaIds(x => x.FullName);
-                 
+
                     string xmlFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
                     string xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
                     options.IncludeXmlComments(xmlFilePath);
