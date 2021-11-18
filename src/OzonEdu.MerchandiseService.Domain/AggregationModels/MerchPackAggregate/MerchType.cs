@@ -14,14 +14,16 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public static readonly MerchType ConferenceSpeaker = new ConferenceSpeakerType();
         public static readonly MerchType Starter = new StarterType();
         public static readonly MerchType Veteran = new VeteranType();
-        
-        private MerchType(int value, string name) : base(value, name) { }
+
+        private MerchType(int value, string name) : base(value, name)
+        {
+        }
         
         public List<ItemType> Items
         {
             get { return items; }
         }
-        
+
         private class WelcomeType : MerchType
         {
             public WelcomeType() : base(10, nameof(Welcome))

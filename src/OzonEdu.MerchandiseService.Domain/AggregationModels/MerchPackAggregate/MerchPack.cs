@@ -14,7 +14,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public Employee Employee { get; }
         public MerchRequestStatus Status { get; private set; }
         public DateTime RequestDate { get; }
-        public DateTime IssueDate { get; private set; }
+        public DateTime? IssueDate { get; private set; }
         
         public MerchPack(MerchType type, ClothingSize size, Employee employee)
         {
@@ -24,6 +24,29 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             Employee = employee;
             Status = MerchRequestStatus.Submitted;
             RequestDate = DateTime.Now;
+        }
+        
+        public MerchPack(long id, MerchType type, ClothingSize size, Employee employee, DateTime requestDate)
+        {
+            Id = id;
+            Type = type;
+            ClothingSize = size;
+            Items = new SkuList(Type, ClothingSize);
+            Employee = employee;
+            Status = MerchRequestStatus.StockAwaitedDelivery;
+            RequestDate = requestDate;
+        }
+        
+        public MerchPack(long id, MerchType type, ClothingSize size, Employee employee, DateTime requestDate, DateTime? issueDate)
+        {
+            Id = id;
+            Type = type;
+            ClothingSize = size;
+            Items = new SkuList(Type, ClothingSize);
+            Employee = employee;
+            Status = MerchRequestStatus.StockReserved;
+            RequestDate = requestDate;
+            IssueDate = issueDate;
         }
         
         public void Validate()

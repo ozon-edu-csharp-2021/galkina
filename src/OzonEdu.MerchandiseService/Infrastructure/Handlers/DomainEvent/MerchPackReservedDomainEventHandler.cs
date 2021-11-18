@@ -9,7 +9,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.DomainEvent
     {
         public Task Handle(MerchPackReservedDomainEvent notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(true);
         }
     }
 }

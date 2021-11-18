@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchandiseService.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate;
+using OzonEdu.MerchandiseService.Domain.Contracts;
 using OzonEdu.MerchandiseService.DomainServices;
 using OzonEdu.MerchandiseService.Infrastructure.Commands;
 using OzonEdu.MerchandiseService.Infrastructure.Stub;
@@ -14,15 +15,18 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
 {
     public class GiveMerchPackAtEmployeeRequestCommandHandler : IRequestHandler<GiveMerchPackAtEmployeeRequestCommand, MerchPack>
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMerchPackRepository _merchPackRepository;
 
-        public GiveMerchPackAtEmployeeRequestCommandHandler(IMerchPackRepository merchPackRepository)
+        public GiveMerchPackAtEmployeeRequestCommandHandler(IMerchPackRepository merchPackRepository, IUnitOfWork unitOfWork)
         {
             _merchPackRepository = merchPackRepository;
+            _unitOfWork = unitOfWork;
         }
         
         public async Task<MerchPack> Handle(GiveMerchPackAtEmployeeRequestCommand request, CancellationToken cancellationToken)
         {
+            await _unitOfWork.StartTransaction(cancellationToken);
             //TODO:
             List<Employee> employees = EmployeesServiceStub.GetAll();
             Employee employee;
@@ -60,15 +64,15 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
                 merchPack.StockReserve();
             }
 
-            long id = await _merchPackRepository.AddMerchPackAsync(merchPack, cancellationToken);
-            await _merchPackRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            var merchpack = await _merchPackRepository.AddMerchPackAsync(merchPack, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             return merchPack;
         }
         
         public bool DidMerchPackIssue(List<MerchPack> merchPacks, MerchType type)
         {
-            MerchPack merchPack = merchPacks.Where(m => m.Type == type)
+            MerchPack merchPack = merchPacks.Where(m => m.Type.Id == type.Id)
                 .OrderByDescending(m => m.IssueDate)
                 .FirstOrDefault();
 

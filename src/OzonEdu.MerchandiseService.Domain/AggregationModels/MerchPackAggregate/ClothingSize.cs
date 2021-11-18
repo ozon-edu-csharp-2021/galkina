@@ -12,7 +12,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public static ClothingSize XL = new(50, nameof(XL));
         public static ClothingSize XXL = new(52, nameof(XXL));
 
-        private ClothingSize(int id, string name) : base(id, name)
+        public ClothingSize(int id, string name) : base(id, name)
         {
         }
         

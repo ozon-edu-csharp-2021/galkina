@@ -41,7 +41,7 @@ namespace OzonEdu.MerchandiseService.Controllers
                 EmployeeId = employeeId
             };
 
-            Aggregate.MerchPack result = await _mediator.Send(giveMerchPackAtEmployeeRequestCommand, token);
+            var result = await _mediator.Send(giveMerchPackAtEmployeeRequestCommand, token);
             
             MerchPackResponse merchPackResponse = new MerchPackResponse()
             {

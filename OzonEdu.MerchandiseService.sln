@@ -7,6 +7,8 @@ ProjectSection(SolutionItems) = preProject
 	readme.md = readme.md
 	.gitignore = .gitignore
 	dockerfile = dockerfile
+	docker-compose.yml = docker-compose.yml
+	entrypoint.sh = entrypoint.sh
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D3BE6FB9-F108-4455-9900-9D25CB481021}"
@@ -23,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.Domain.Tests", "tests\OzonEdu.MerchandiseService.Domain.Tests\OzonEdu.MerchandiseService.Domain.Tests.csproj", "{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchandiseService.Migrator", "src\OzonEdu.MerchandiseService.Migrator\OzonEdu.MerchandiseService.Migrator.csproj", "{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,7 @@ Global
 		{A376FBD1-31F9-45AF-B3D0-4E3B6D655F44} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
 		{42884BF4-F441-45E3-8E95-ADD3E84114A4} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
 		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7} = {D3BE6FB9-F108-4455-9900-9D25CB481021}
+		{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E} = {1403ACE5-BB19-4953-9B4B-B8CBD83A4B50}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{30615C79-4451-4BE5-8588-073F67DEB802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,5 +66,9 @@ Global
 		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6476CCF9-8EE9-4F65-8B67-89F8337B6DD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40296C0F-35AE-4CEA-BBEF-3023D1FDCD2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
