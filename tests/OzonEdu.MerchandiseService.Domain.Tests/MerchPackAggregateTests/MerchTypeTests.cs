@@ -110,7 +110,7 @@ namespace OzonEdu.MerchandiseService.Domain.Tests.MerchPackAggregateTests
                 MerchType.Veteran,
                 new List<ItemType>()
                 {
-                    ItemType.Bag,
+                    ItemType.CardHolder,
                     ItemType.Socks
                 }
             };

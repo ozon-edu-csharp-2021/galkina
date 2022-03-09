@@ -25,7 +25,7 @@ namespace OzonEdu.MerchandiseService.Migrator.Migrations
                     (1, 'TShirt'),
                     (2, 'Sweatshirt'),
                     (3, 'Notepad'),
-                    (4, 'Bag'),
+                    (4, 'CardHolder'),
                     (5, 'Pen'),
                     (6, 'Socks')
                 ON CONFLICT DO NOTHING

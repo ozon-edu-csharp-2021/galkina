@@ -24,6 +24,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
         
         public async Task<MerchPack> AddMerchPackAsync(MerchPack merchPackToCreate, CancellationToken cancellationToken)
         {
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            
             const string sql = @"
                 INSERT INTO merchpacks (merch_type_id, employee_id, merch_request_status, clothing_size, request_date, issue_date)
                 VALUES (@MerchTypeId, @EmployeeId, @MerchRequestStatus, @ClothingSize, @RequestDate, @IssueDate);
@@ -50,7 +52,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
-            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            
             await connection.ExecuteAsync(commandDefinition);
             _changeTracker.Track(merchPackToCreate);
             return merchPackToCreate;
@@ -83,7 +85,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
         public async Task<List<MerchPack>> GetIssuedMerchPacksToEmployeeAsync(long employeeId, CancellationToken cancellationToken)
         {
             const string sql = @"
-                SELECT merchpacks.id, merchpacks.merch_type_id, merchpacks.employee_id, merchpacks.merch_request_status, merchpacks.clothing_size, merchpacks.request_date, merchpacks.issue_date,
+                SELECT merchpacks.id, merchpacks.merch_type_id, merchpacks.employee_id, merchpacks.merch_request_status, 
+                       merchpacks.clothing_size, merchpacks.request_date, merchpacks.issue_date,
                        employees.id, employees.first_name, employees.middle_name, employees.last_name, employees.email,
                        clothing_sizes.id, clothing_sizes.name       
                 FROM merchpacks
@@ -109,7 +112,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
                 (merchPack, employee, clothingSize) => new MerchPack(
                     merchPack.Id,
                     MerchType.Parse(merchPack.MerchTypeId),
-                    merchPack.ClothingSize is not null ? new ClothingSize(clothingSize.Id.Value, clothingSize.Name) : null,
+                    merchPack.ClothingSize is not null ? ClothingSize.Parse(clothingSize.Name) : null,
                     new Employee(employee.Id, employee.FirstName, employee.LastName, employee.MiddleName, employee.Email),
                     merchPack.RequestDate,
                     merchPack.IssueDate));
@@ -125,13 +128,9 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
                 SELECT merchpacks.id, merchpacks.merch_type_id, merchpacks.employee_id, merchpacks.merch_request_status,
                        merchpacks.clothing_size, merchpacks.request_date,
                        employees.id, employees.first_name, employees.middle_name, employees.last_name, employees.email,
-                       merch_types.id, merch_types.name,
-                       merch_request_statuses.id, merch_request_statuses.name,
                        clothing_sizes.id, clothing_sizes.name       
                 FROM merchpacks
                 INNER JOIN employees on merchpacks.employee_id = employees.id
-                INNER JOIN merch_types on merch_types.id = merchpacks.merch_type_id
-                INNER JOIN merch_request_statuses on merch_request_statuses.id = merchpacks.merch_request_status
                 LEFT JOIN clothing_sizes on clothing_sizes.id = merchpacks.clothing_size
                 WHERE merch_request_status = 4;";
             
@@ -141,20 +140,15 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
             var merchPacks = await connection.QueryAsync<
-                Models.MerchPack, Models.ClothingSize, Models.Employee, MerchPack>(commandDefinition,
-                (merchPack, clothingSize, employee) => new MerchPack(
+                Models.MerchPack, Models.Employee, Models.ClothingSize, MerchPack>(commandDefinition,
+                (merchPack, employee, clothingSize) => new MerchPack(
                     merchPack.Id,
                     MerchType.Parse(merchPack.MerchTypeId),
-                    merchPack.ClothingSize is not null ? new ClothingSize(clothingSize.Id.Value, clothingSize.Name) : null,
+                    merchPack.ClothingSize is not null ? ClothingSize.Parse(clothingSize.Name) : null,
                     new Employee(employee.Id, employee.FirstName, employee.LastName, employee.MiddleName, employee.Email),
                     merchPack.RequestDate));
 
             var result = merchPacks.ToList();
-            
-            foreach (var merchPack in result)
-            {
-                _changeTracker.Track(merchPack);
-            }
 
             return result;
         }

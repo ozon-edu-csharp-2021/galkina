@@ -67,18 +67,20 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             }
 
             Status = MerchRequestStatus.StockAwaitedDelivery;
+            
+            AddMerchPackAwaitDeliveryDomainEvent();
         }
         
         public void StockConfirm()
         {
-            if (Status != MerchRequestStatus.Validated)
+            if (Status != MerchRequestStatus.Validated && Status != MerchRequestStatus.StockAwaitedDelivery)
             {
                 throw new MerchStatusException($"Incorrect request status. Status {Status} cannot be changed to StockConfirmed.");
             }
 
             Status = MerchRequestStatus.StockConfirmed;
         }
-        
+
         public void StockReserve()
         {
             if (Status != MerchRequestStatus.StockConfirmed)
@@ -95,10 +97,16 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         {
             Status = MerchRequestStatus.Cancelled;
         }
+        
+        private void AddMerchPackAwaitDeliveryDomainEvent()
+        {
+            var merchAwaitDeliveryDomainEvent = new MerchPackAwaitDeliveryDomainEvent(Employee.Id, Employee.Email.ToString(), Employee.ToString());
+            AddDomainEvent(merchAwaitDeliveryDomainEvent);
+        }
 
         private void AddMerchPackReservedDomainEvent()
         {
-            var merchReservedDomainEvent = new MerchPackReservedDomainEvent(Employee.Email.ToString(), Employee.ToString(), Type);
+            var merchReservedDomainEvent = new MerchPackReservedDomainEvent(Employee.Id, Employee.Email.ToString(), Employee.ToString(), Type, ClothingSize);
             AddDomainEvent(merchReservedDomainEvent);
         }
     }

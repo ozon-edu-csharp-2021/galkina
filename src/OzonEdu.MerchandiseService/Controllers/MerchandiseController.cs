@@ -72,7 +72,7 @@ namespace OzonEdu.MerchandiseService.Controllers
 
             var result = await _mediator.Send(getIssuedMerchPacksQuery, token);
 
-            List<MerchPackResponse> response = new List<MerchPackResponse>();
+            var response = new List<MerchPackResponse>();
 
             foreach (Aggregate.MerchPack merchPack in result)
             {

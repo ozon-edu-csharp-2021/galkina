@@ -45,9 +45,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Infrastructure
             {
                 throw new NoActiveTransactionStartedException();
             }
-
-            var v = _changeTracker.TrackedEntities;
-
+            
             var domainEvents = new Queue<INotification>(
                 _changeTracker.TrackedEntities
                     .SelectMany(x =>
@@ -59,7 +57,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Infrastructure
             
             while (domainEvents.TryDequeue(out var notification))
             {
-                await _publisher.Publish(notification, cancellationToken);
+                dynamic not = (dynamic)notification;
+                await _publisher.Publish(not, cancellationToken);
             }
 
             await _npgsqlTransaction.CommitAsync(cancellationToken);

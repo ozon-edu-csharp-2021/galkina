@@ -11,16 +11,16 @@ using OzonEdu.MerchandiseService.Infrastructure.MessageBroker;
 
 namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.DomainEvent
 {
-    public class MerchPackReservedDomainEventHandler : INotificationHandler<MerchPackReservedDomainEvent> 
+    public class MerchPackAwaitDeliveryDomainEventHandler : INotificationHandler<MerchPackAwaitDeliveryDomainEvent> 
     {
         private readonly IProducerBuilderWrapper _producerBuilderWrapper;
 
-        public MerchPackReservedDomainEventHandler(IProducerBuilderWrapper producerBuilderWrapper)
+        public MerchPackAwaitDeliveryDomainEventHandler(IProducerBuilderWrapper producerBuilderWrapper)
         {
             _producerBuilderWrapper = producerBuilderWrapper;
         }
 
-        public Task Handle(MerchPackReservedDomainEvent notification, CancellationToken cancellationToken)
+        public Task Handle(MerchPackAwaitDeliveryDomainEvent notification, CancellationToken cancellationToken)
         {
             _producerBuilderWrapper.Producer.Produce(_producerBuilderWrapper.EmployeeNotificationTopic,
                 new Message<string, string>()
@@ -31,11 +31,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.DomainEvent
                         EmployeeEmail = notification.EmployeeEmail,
                         EmployeeName = notification.EmployeeName,
                         EventType = EmployeeEventType.MerchDelivery,
-                        Payload = new MerchDeliveryEventPayload()
-                        {
-                            MerchType = (enums.MerchType)notification.MerchType.ParseToInt(),
-                            ClothingSize = (enums.ClothingSize)notification.ClothingSize.ParseToInt()
-                        }
+                        Payload = null
                     })
                 });
             
