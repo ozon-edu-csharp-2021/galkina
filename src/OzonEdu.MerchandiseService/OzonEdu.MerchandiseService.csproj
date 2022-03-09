@@ -11,12 +11,48 @@
       <ProjectReference Include="..\OzonEdu.MerchandiseService.Domain\OzonEdu.MerchandiseService.Domain.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchandiseService.Grpc\OzonEdu.MerchandiseService.Grpc.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchandiseService.HttpModels\OzonEdu.MerchandiseService.HttpModels.csproj" />
+      <ProjectReference Include="..\OzonEdu.MerchandiseService.Migrator\OzonEdu.MerchandiseService.Migrator.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
+      <PackageReference Include="Dapper" Version="2.0.123" />
       <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.40.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+      <PackageReference Include="Npgsql" Version="6.0.0" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+      <PackageReference Include="Google.Protobuf" Version="3.19.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.41.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Infrastructure\ExternalServices\StockApiGrpcService\stock-api.proto" GrpcServices="Client">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="GrpcServices\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="GrpcServices\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="GrpcServices\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="GrpcServices\**" />
     </ItemGroup>
     
 </Project>

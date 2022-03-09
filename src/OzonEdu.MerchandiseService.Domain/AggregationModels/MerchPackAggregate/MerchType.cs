@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using OzonEdu.MerchandiseService.Domain.Models;
 
 namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
@@ -14,14 +15,16 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public static readonly MerchType ConferenceSpeaker = new ConferenceSpeakerType();
         public static readonly MerchType Starter = new StarterType();
         public static readonly MerchType Veteran = new VeteranType();
-        
-        private MerchType(int value, string name) : base(value, name) { }
+
+        private MerchType(int value, string name) : base(value, name)
+        {
+        }
         
         public List<ItemType> Items
         {
             get { return items; }
         }
-        
+
         private class WelcomeType : MerchType
         {
             public WelcomeType() : base(10, nameof(Welcome))
@@ -77,7 +80,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             {
                 items = new List<ItemType>()
                 {
-                    ItemType.Bag,
+                    ItemType.CardHolder,
                     ItemType.Socks
                 };
             }
@@ -106,5 +109,22 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         {
             return GetEnumerator();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+                return false;
+
+            if (obj is not MerchType)
+                return false;
+
+            MerchType mt = (MerchType) obj;
+            
+            return this.Id == mt.Id;
+        }
+        
+        public static bool operator == (MerchType a, MerchType b) => a.Equals(b);
+        
+        public static bool operator != (MerchType a, MerchType b) => !a.Equals(b);
     }
 }

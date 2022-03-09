@@ -6,20 +6,22 @@ namespace OzonEdu.MerchandiseService.Domain.Events
 {
     public class MerchPackReservedDomainEvent : INotification
     {
+        public long EmployeeId { get; }
         public string EmployeeEmail { get; }
         
         public string EmployeeName { get; }
         
-        public EmployeeEventType EventType { get; }
+        public MerchType MerchType { get; }
         
-        public object? Payload { get; }
+        public ClothingSize ClothingSize { get; }
 
-        public MerchPackReservedDomainEvent(string email, string name, MerchType merchType)
+        public MerchPackReservedDomainEvent(long id, string email, string name, MerchType merchType, ClothingSize clothingSize)
         {
+            EmployeeId = id;
             EmployeeEmail = email;
             EmployeeName = name;
-            EventType = EmployeeEventType.MerchDelivery;
-            Payload = new MerchDeliveryEventPayload(merchType);
+            MerchType = merchType;
+            ClothingSize = clothingSize;
         }
     }
 }

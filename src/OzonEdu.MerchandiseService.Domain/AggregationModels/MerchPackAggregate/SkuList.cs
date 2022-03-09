@@ -4,98 +4,193 @@ using OzonEdu.MerchandiseService.Domain.Models;
 
 namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
 {
-    public class SkuList : ValueObject, IEnumerable<Sku>
+    public class SkuList : ValueObject
     {
-        private List<Sku> skues;
+        private List<long> skues;
         
-        public List<Sku> Skues
+        public List<long> Skues
         {
             get => skues;
         }
 
         public SkuList(MerchType merchType, ClothingSize size)
         {
-            skues = new List<Sku>();
             FillScuList(merchType, size);
-        }
-        
-        public IEnumerator<Sku> GetEnumerator()
-        {
-            return skues.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            foreach(Sku sku in skues)
+            foreach(long sku in skues)
                 yield return sku;
         }
 
         private void FillScuList(MerchType merchType, ClothingSize size)
         {
-            foreach (ItemType item in merchType.Items)
+            if (merchType == MerchType.Starter)
             {
-                if (item == ItemType.TShirt)
+                if (size == ClothingSize.XS)
                 {
-                    var skuTShirt = CalculateTShirtSize(size);
-                    skues.Add(skuTShirt);
+                    skues = new List<long> {1, 41, 42, 43};
+                    return;
                 }
-                else if (item == ItemType.Sweatshirt)
+                if (size == ClothingSize.S)
                 {
-                    var skuSweatshirt = CalculateSweatshirtSize(size);
-                    skues.Add(skuSweatshirt);
+                    skues = new List<long> {2, 41, 42, 43};
+                    return;
                 }
-                else if (item == ItemType.Bag)
+                if (size == ClothingSize.M)
                 {
-                    skues.Add(Sku.Bag);
+                    skues = new List<long> {3, 41, 42, 43};
+                    return;
                 }
-                else if (item == ItemType.Pen)
+                if (size == ClothingSize.L)
                 {
-                    skues.Add(Sku.Pen);
+                    skues = new List<long> {4, 41, 42, 43};
+                    return;
                 }
-                else if (item == ItemType.Notepad)
+                if (size == ClothingSize.XL)
                 {
-                    skues.Add(Sku.Notepad);
+                    skues = new List<long> {5, 41, 42, 43};
+                    return;
                 }
-                else if (item == ItemType.Socks)
+                if (size == ClothingSize.XXL)
                 {
-                    skues.Add(Sku.Socks);
+                    skues = new List<long> {6, 41, 42, 43};
+                    return;
                 }
             }
-        }
-
-        private Sku CalculateTShirtSize(ClothingSize size)
-        {
-            if(size == ClothingSize.XS)
-                return Sku.TShirtXS;
-            if(size == ClothingSize.S)
-                return Sku.TShirtS;
-            if(size == ClothingSize.M)
-                return Sku.TShirtM;
-            if(size == ClothingSize.L)
-                return Sku.TShirtL;
-            if(size == ClothingSize.XL)
-                return Sku.TShirtXL;
-            return Sku.TShirtXXL;
-        }
-        
-        private Sku CalculateSweatshirtSize(ClothingSize size)
-        {
-            if(size == ClothingSize.XS)
-                return Sku.SweatshirtXS;
-            if(size == ClothingSize.S)
-                return Sku.SweatshirtS;
-            if(size == ClothingSize.M)
-                return Sku.SweatshirtM;
-            if(size == ClothingSize.L)
-                return Sku.SweatshirtL;
-            if(size == ClothingSize.XL)
-                return Sku.SweatshirtXL;
-            return Sku.SweatshirtXXL;
+            if (merchType == MerchType.Welcome)
+            {
+                if (size == ClothingSize.XS)
+                {
+                    skues = new List<long> {7, 13};
+                    return;
+                }
+                if (size == ClothingSize.S)
+                {
+                    skues = new List<long> {8, 14};
+                    return;
+                }
+                if (size == ClothingSize.M)
+                {
+                    skues = new List<long> {9, 15};
+                    return;
+                }
+                if (size == ClothingSize.L)
+                {
+                    skues = new List<long> {10, 16};
+                    return;
+                }
+                if (size == ClothingSize.XL)
+                {
+                    skues = new List<long> {11, 17};
+                    return;
+                }
+                if (size == ClothingSize.XXL)
+                {
+                    skues = new List<long> {12, 18};
+                    return;
+                }
+            }
+            if (merchType == MerchType.ConferenceListener)
+            {
+                if (size == ClothingSize.XS)
+                {
+                    skues = new List<long> {25, 46, 47};
+                    return;
+                }
+                if (size == ClothingSize.S)
+                {
+                    skues = new List<long> {26, 46, 47};
+                    return;
+                }
+                if (size == ClothingSize.M)
+                {
+                    skues = new List<long> {27, 46, 47};
+                    return;
+                }
+                if (size == ClothingSize.L)
+                {
+                    skues = new List<long> {28, 46, 47};
+                    return;
+                }
+                if (size == ClothingSize.XL)
+                {
+                    skues = new List<long> {29, 46, 47};
+                    return;
+                }
+                if (size == ClothingSize.XXL)
+                {
+                    skues = new List<long> {30, 46, 47};
+                    return;
+                }
+            }
+            if (merchType == MerchType.ConferenceSpeaker)
+            {
+                if (size == ClothingSize.XS)
+                {
+                    skues = new List<long> {19, 44, 45};
+                    return;
+                }
+                if (size == ClothingSize.S)
+                {
+                    skues = new List<long> {20, 44, 45};
+                    return;
+                }
+                if (size == ClothingSize.M)
+                {
+                    skues = new List<long> {21, 44, 45};
+                    return;
+                }
+                if (size == ClothingSize.L)
+                {
+                    skues = new List<long> {22, 44, 45};
+                    return;
+                }
+                if (size == ClothingSize.XL)
+                {
+                    skues = new List<long> {23, 44, 45};
+                    return;
+                }
+                if (size == ClothingSize.XXL)
+                {
+                    skues = new List<long> {24, 44, 45};
+                    return;
+                }
+            }
+            if (merchType == MerchType.Veteran)
+            {
+                if (size == ClothingSize.XS)
+                {
+                    skues = new List<long> {31, 36, 48, 49, 50};
+                    return;
+                }
+                if (size == ClothingSize.S)
+                {
+                    skues = new List<long> {32, 37, 48, 49, 50};
+                    return;
+                }
+                if (size == ClothingSize.M)
+                {
+                    skues = new List<long> {33, 38, 48, 49, 50};
+                    return;
+                }
+                if (size == ClothingSize.L)
+                {
+                    skues = new List<long> {34, 39, 48, 49, 50};
+                    return;
+                }
+                if (size == ClothingSize.XL)
+                {
+                    skues = new List<long> {35, 40, 48, 49, 50};
+                    return;
+                }
+                if (size == ClothingSize.XXL)
+                {
+                    skues = new List<long> {36, 41, 48, 49, 50};
+                    return;
+                }
+            }
         }
     }
 }

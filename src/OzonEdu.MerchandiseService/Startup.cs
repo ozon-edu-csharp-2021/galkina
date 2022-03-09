@@ -1,16 +1,27 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OzonEdu.MerchandiseService.GrpcServices;
-using OzonEdu.MerchandiseService.Infrastructure.Middlewares;
+using OzonEdu.MerchandiseService.Infrastructure.Extensions;
 
 namespace OzonEdu.MerchandiseService
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMerchandiseService, Services.MerchandiseService>();
+            services.AddCustomOptions(Configuration)
+                .AddDatabaseComponents(Configuration)
+                .AddHostedServices()
+                .AddStockGrpcServiceClient(Configuration)
+                .AddKafkaServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -19,7 +30,6 @@ namespace OzonEdu.MerchandiseService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<MerchandiseServiceGrpcService>();
                 endpoints.MapControllers();
             });
         }

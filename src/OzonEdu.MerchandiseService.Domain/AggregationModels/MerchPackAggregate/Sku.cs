@@ -6,7 +6,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
     {
         public static Sku Pen = new(1, nameof(Pen));
         public static Sku Notepad = new(2, nameof(Notepad));
-        public static Sku Bag = new(3, nameof(Bag));
+        public static Sku CardHolder = new(3, nameof(CardHolder));
         public static Sku Socks = new(4, nameof(Socks));
         public static Sku TShirtXS = new(5, nameof(TShirtXS));
         public static Sku TShirtS = new(6, nameof(TShirtS));

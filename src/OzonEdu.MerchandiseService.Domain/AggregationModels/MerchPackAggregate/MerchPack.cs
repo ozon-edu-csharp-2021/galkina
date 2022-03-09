@@ -14,8 +14,8 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public Employee Employee { get; }
         public MerchRequestStatus Status { get; private set; }
         public DateTime RequestDate { get; }
-        public DateTime IssueDate { get; private set; }
-        
+        public DateTime? IssueDate { get; private set; }
+
         public MerchPack(MerchType type, ClothingSize size, Employee employee)
         {
             Type = type;
@@ -26,6 +26,29 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             RequestDate = DateTime.Now;
         }
         
+        public MerchPack(long id, MerchType type, ClothingSize size, Employee employee, DateTime requestDate)
+        {
+            Id = id;
+            Type = type;
+            ClothingSize = size;
+            Items = new SkuList(Type, ClothingSize);
+            Employee = employee;
+            Status = MerchRequestStatus.StockAwaitedDelivery;
+            RequestDate = requestDate;
+        }
+        
+        public MerchPack(long id, MerchType type, ClothingSize size, Employee employee, DateTime requestDate, DateTime? issueDate)
+        {
+            Id = id;
+            Type = type;
+            ClothingSize = size;
+            Items = new SkuList(Type, ClothingSize);
+            Employee = employee;
+            Status = MerchRequestStatus.StockReserved;
+            RequestDate = requestDate;
+            IssueDate = issueDate;
+        }
+
         public void Validate()
         {
             if (Status != MerchRequestStatus.Submitted && Status != MerchRequestStatus.StockAwaitedDelivery)
@@ -44,18 +67,20 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             }
 
             Status = MerchRequestStatus.StockAwaitedDelivery;
+            
+            AddMerchPackAwaitDeliveryDomainEvent();
         }
         
         public void StockConfirm()
         {
-            if (Status != MerchRequestStatus.Validated)
+            if (Status != MerchRequestStatus.Validated && Status != MerchRequestStatus.StockAwaitedDelivery)
             {
                 throw new MerchStatusException($"Incorrect request status. Status {Status} cannot be changed to StockConfirmed.");
             }
 
             Status = MerchRequestStatus.StockConfirmed;
         }
-        
+
         public void StockReserve()
         {
             if (Status != MerchRequestStatus.StockConfirmed)
@@ -72,10 +97,16 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         {
             Status = MerchRequestStatus.Cancelled;
         }
+        
+        private void AddMerchPackAwaitDeliveryDomainEvent()
+        {
+            var merchAwaitDeliveryDomainEvent = new MerchPackAwaitDeliveryDomainEvent(Employee.Id, Employee.Email.ToString(), Employee.ToString());
+            AddDomainEvent(merchAwaitDeliveryDomainEvent);
+        }
 
         private void AddMerchPackReservedDomainEvent()
         {
-            var merchReservedDomainEvent = new MerchPackReservedDomainEvent(Employee.Email.ToString(), Employee.ToString(), Type);
+            var merchReservedDomainEvent = new MerchPackReservedDomainEvent(Employee.Id, Employee.Email.ToString(), Employee.ToString(), Type, ClothingSize);
             AddDomainEvent(merchReservedDomainEvent);
         }
     }

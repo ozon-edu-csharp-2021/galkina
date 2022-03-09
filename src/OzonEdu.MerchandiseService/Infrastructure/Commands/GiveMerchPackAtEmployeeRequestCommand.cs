@@ -1,6 +1,4 @@
-﻿using System;
-using MediatR;
-using OzonEdu.MerchandiseService.Domain.AggregationModels.EmployeeAggregate;
+﻿using MediatR;
 using OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate;
 
 namespace OzonEdu.MerchandiseService.Infrastructure.Commands
