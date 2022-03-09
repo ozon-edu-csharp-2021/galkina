@@ -15,7 +15,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
         public MerchRequestStatus Status { get; private set; }
         public DateTime RequestDate { get; }
         public DateTime? IssueDate { get; private set; }
-        
+
         public MerchPack(MerchType type, ClothingSize size, Employee employee)
         {
             Type = type;
@@ -48,7 +48,7 @@ namespace OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate
             RequestDate = requestDate;
             IssueDate = issueDate;
         }
-        
+
         public void Validate()
         {
             if (Status != MerchRequestStatus.Submitted && Status != MerchRequestStatus.StockAwaitedDelivery)

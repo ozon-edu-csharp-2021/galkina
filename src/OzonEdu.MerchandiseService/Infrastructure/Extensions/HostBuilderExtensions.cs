@@ -91,7 +91,6 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                 AddMediator(services);
                 AddDatabaseComponents(services);
                 AddRepositories(services);
-            });
 
             return builder;
         }
