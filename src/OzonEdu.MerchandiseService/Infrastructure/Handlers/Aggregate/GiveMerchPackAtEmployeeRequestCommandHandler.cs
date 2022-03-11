@@ -79,7 +79,7 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
 
         private bool DidMerchPackIssue(List<MerchPack> merchPacks, MerchType type)
         {
-            MerchPack merchPack = merchPacks.Where(m => m.Type.Id == type.Id)
+            var merchPack = merchPacks.Where(m => m.Type.Id == type.Id).Last();
 
             if (merchPack == null)
                 return false;

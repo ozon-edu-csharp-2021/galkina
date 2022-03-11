@@ -6,6 +6,7 @@ using Dapper;
 using Npgsql;
 using OzonEdu.MerchandiseService.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchandiseService.Domain.AggregationModels.MerchPackAggregate;
+using OzonEdu.MerchandiseService.Domain.Contracts;
 using OzonEdu.MerchandiseService.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 namespace OzonEdu.MerchandiseService.Infrastructure.Repositories.Implementation
