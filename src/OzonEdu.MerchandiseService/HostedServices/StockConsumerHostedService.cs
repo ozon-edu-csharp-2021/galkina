@@ -54,12 +54,10 @@ namespace OzonEdu.MerchandiseService.HostedServices
                             try
                             {
                                 await Task.Yield();
-                                Console.WriteLine("This is background servise");
                                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
                                 var cr = c.Consume(stoppingToken);
                                 if (cr != null)
                                 {
-                                    Console.WriteLine("This is message");
                                     var message = JsonSerializer.Deserialize<StockReplenishedEvent>(cr.Message.Value);
                                     await mediator.Send(new GiveUnreleasedMerchPacksCommand(), stoppingToken);
                                 }

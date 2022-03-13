@@ -79,10 +79,12 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
 
         private bool DidMerchPackIssue(List<MerchPack> merchPacks, MerchType type)
         {
-            var merchPack = merchPacks.Where(m => m.Type.Id == type.Id).Last();
+            var merchPacksOfType = merchPacks.Where(m => m.Type.Id == type.Id).ToList();
 
-            if (merchPack == null)
+            if (merchPacksOfType.Count == 0)
                 return false;
+
+            var merchPack = merchPacksOfType.Last();
 
             TimeSpan oneYear = new TimeSpan(365, 0, 0, 0);
 
@@ -120,7 +122,5 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Handlers.Aggregate
 
             return true;
         }
-
-       
     }
 }
